@@ -1,0 +1,184 @@
+.form-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.bet-mode > button {
+  width: 50%;
+  margin-top: 0;
+}
+
+.auto-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.bet-button {
+  width: 100%;
+  background-color: rgb(16, 248, 47);
+  color: #0f212e;
+  padding: 0.8em;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  border: none;
+  /* margin-top: 1em; */
+}
+
+.bet-button:hover {
+  background-color: rgb(31, 197, 53);
+  transition: all 0.2s ease-in-out;
+}
+
+.manual-button {
+  border-radius: 0.24em 0px 0px 0.24em;
+  font-size: 0.8em;
+  padding: 0.6em;
+}
+
+.auto-button {
+  border-radius: 0em 0.24em 0.24em 0em;
+  font-size: 0.8em;
+  padding: 0.6em;
+}
+
+.unselected-tab {
+  background-color: rgb(20, 42, 55);
+  color: rgb(77, 95, 111);
+  border: none;
+}
+
+.selected-tab:hover {
+  background-color: rgb(66, 90, 108);
+  transition: all 0.1s ease-in-out;
+}
+
+.selected-tab {
+  background-color: rgb(47, 69, 83);
+  color: rgb(105, 121, 139);
+  cursor: pointer;
+  border: none;
+  transition: all 0.1s ease-in-out;
+}
+
+.set-balance-btn {
+  background-color: rgb(49, 109, 236);
+  color: none;
+  font-size: 0.8em;
+  font-weight: 500;
+  padding: 0.56em;
+  cursor: pointer;
+  border-radius: 0.4em;
+  border: none;
+}
+
+.bal-input {
+  display: flex;
+  justify-content: space-between;
+}
+
+#bal {
+  width: 17em;
+  
+}
+
+.input {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 0.4em;
+}
+
+.bet-modifier {
+  min-width: 3.4em;
+  background-color: rgb(47, 69, 83);
+  box-shadow: none;
+  transition: all 0.1s ease-in-out;
+}
+
+.bet-modifier:hover {
+  background-color: rgb(66, 90, 108);
+  border: 2px solid rgb(66, 90, 108);
+  transition: all 0.1s ease-in-out;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  background-color: rgb(33, 55, 67);
+  padding: 2em;
+  min-width: 24.2em;
+  border-bottom-left-radius: 1em;
+  border-bottom-right-radius: 1em;
+}
+
+.balance-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4em;
+  background-color: rgb(33, 55, 67);
+  padding: 2em;
+  padding-bottom: 0;
+  margin-bottom: -1em;
+  min-width: 24.2em;
+}
+
+#balance {
+  background: rgb(20, 42, 55);
+  font-weight: 700;
+  padding: 0.2em;
+  color: rgb(49, 109, 236);
+  border-radius: 0.24em;
+}
+
+.risk-rows {
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+}
+
+#bet-amount {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  box-shadow: none;
+  width: 16.8em;
+}
+
+.half {
+  border-radius: 0;
+  cursor: pointer;
+  position: relative;
+}
+
+.half::after {
+  content: "";
+  background: rgb(26, 44, 56);
+  position: absolute;
+  bottom: 25%;
+  right: -2px;
+  height: 50%;
+  width: 1px;
+}
+
+.double {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+  cursor: pointer;
+  position: relative;
+}
+
+.double::after {
+  content: "";
+  background: rgb(26, 44, 56);
+  position: absolute;
+  bottom: 25%;
+  left: -2px;
+  height: 50%;
+  width: 1px;
+}
+
+.bet-input {
+  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.6);
+}
