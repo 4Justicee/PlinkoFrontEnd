@@ -1,10 +1,15 @@
-import React from "react";
-import "./pyramid.css";
-import Ball from "../Ball/Ball";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 
-const Pyramid = ({ rows, nodeArr, tempOldNodeArr, path, betStarted }) => {
+import Ball from "../Ball/Ball";
+import "./pyramid.css";
+
+const Pyramid = ({ rows, nodeArr, tempOldNodeArr }) => {
   const [rowsWord, setRowsWord] = useState("eight");
+  const store = useSelector(state=>state.game)
+  const path = store.betPath
+  const betStarted = store.betStarted
+ 
   useEffect(() => {
     switch (rows) {
       case 8:
