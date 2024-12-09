@@ -4,11 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import Ball from "../Ball/Ball";
 import "./pyramid.css";
 
-const Pyramid = ({ rows, nodeArr, tempOldNodeArr }) => {
+const Pyramid = ({ rows, nodeArr, tempOldNodeArr, betStarted }) => {
   const [rowsWord, setRowsWord] = useState("eight");
   const store = useSelector(state=>state.game)
   const path = store.betPath
-  const betStarted = store.betStarted
  
   useEffect(() => {
     switch (rows) {

@@ -117,7 +117,7 @@ const Ball = ({ rows, path = [], betStarted }) => {
       variants={variants}
       animate={betStarted ? "start" : "end"}
       transition={{
-        duration: 1.2,
+        duration: 2.0,
         ease: "easeIn",
         repeatDelay: 0,
       }}

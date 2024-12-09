@@ -6,6 +6,7 @@ const Balance = () => {
   const dispatch = useDispatch()
   const store = useSelector(state=>state.game)
   const balances = store?.balances
+  const currency = store.currency
 
   const handleBalance = (e)=>{
     dispatch(setCurrency(e.currency))
@@ -84,7 +85,7 @@ const Balance = () => {
           </p>
           <div style={{flexGrow:1}}>
             <Select  
-            defaultValue={balanceOptions.find(option => option.value === 'medium')} // Adjust depending on your actual default value  
+            value={balanceOptions.find(option => option.currency === currency)} 
             onChange={handleBalance}  
             options={balanceOptions}  
             styles={customStyles}  

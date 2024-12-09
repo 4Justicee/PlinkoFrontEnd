@@ -1,16 +1,20 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 
+import { ToastContainer } from 'react-toastify';  
+import { toast } from 'react-toastify';
 import Pyramid from "./components/Pyramid/Pyramid";
 import Menu from "./components/Menu/Menu";
 import Balance from "./components/Balance/Balance";
 import Error from "./components/Error/Error";
 
 
-import { initGame } from "./store/gameSlice";
+import { initGame, startBet, reloadBalance } from "./store/gameSlice";
 import { delay } from "./utils/util";
 
 import "./App.css";
+
+import 'react-toastify/dist/ReactToastify.css';  
 
 class Node {
   constructor(data) {
@@ -29,17 +33,18 @@ class LinkedList {
 const App = () => {
   const dispatch = useDispatch();
 
-  const [error, setError] = useState(false)
+  const [error, setError] = useState(0)
   const [rows, setRows] = useState(8)
   const [betAmount, setBetAmount] = useState(1)
   const [numOfAutoBets, setNumOfAutoBets] = useState(10)
-  const [risk, setRisk] = useState(0)
+  const [risk, setRisk] = useState(1)
   const [autoBet, setAutoBet] = useState(false)
+  const [betStarted, setBetStarted] = useState(false)
 
   const store = useSelector(state=>state.game)
   const multipliers = store.multipliers
-  const balance = store.balance
-  const betStarted = store.betStarted
+  const balances = store.balances
+  const currency = store.currency
 
   let rowCount = 1; 
     
@@ -82,12 +87,13 @@ const App = () => {
     tempOldNodeArr.pop();
   }
 
+
   const handleBetAmount = (e) => {
     setBetAmount(parseFloat(e.target.value));
   };
 
   const handleAutoBet = (e) => {
-    //e.target.id === "auto" ? setAutoBet(true) : setAutoBet(false);
+    e.target.id === "auto" ? setAutoBet(true) : setAutoBet(false);
   };
 
   const handleRisk = (e) => {
@@ -109,60 +115,80 @@ const App = () => {
   // betting function
   const randomTraverse = async () => {
     if (!betStarted) {
-      let multiplier = 0;
-      if (betAmount > balance) {
-        // add popup here
-        console.log("cannot be");
-        setError(true);
+      const found = balances.find(item => item.currency === currency);  
+      const balance = found ? found.balance : 0; 
+
+      if(currency == "") {
+        setError(1);
         await delay(2000);
-        setError(false);
+        setError(0);
+        return;
+      }     
+
+      if (betAmount > balance) {
+        // add popup here        
+        setError(2);
+        await delay(2000);
+        setError(0);
         return;
       }
-      const headDup = list.head;
-      let path = [];
-      //setBetStarted(true);
-      while (list.head) {
-        multiplier = list.head.data;
-        if (Math.random() > 0.5) {
-          list.head = list.head.nextLeft;
-          path.push(-1);
-        } else {
-          list.head = list.head.nextRight;
-          path.push(1);
+
+      dispatch(startBet({
+        betAmount,
+        risk,
+        rows
+      })).then(async e=>{
+      
+        if(e.payload.bet_status == 1) {
+          setBetStarted(true);
+
+          await delay(2000);
+ 
+          dispatch(reloadBalance({}));
+          setBetStarted(false);          
         }
-      }
-
-      path.pop();
-      //setBetPath(path);
-
-      await delay(1200);
-      /*await setBalance(
-        (balance) => balance - betAmount + betAmount * multiplier
-      );*/
-      //await setBetStarted(false);
-      list.head = headDup;
-
+      });
     }
   };
 
   
 
   const automatedTraverse = async () => {
-    if (betAmount * numOfAutoBets > balance) {
-      // add popup here
-      console.log("cannot be");
-      setError(true);
+    const found = balances.find(item => item.currency === currency);  
+    const balance = found ? found.balance : 0; 
+
+    if(currency == "") {
+      setError(1);
       await delay(2000);
-      setError(false);
-      //setBetStarted(false);
+      setError(0);
+      return;
+    }  
+
+    if (betAmount * numOfAutoBets > balance) {
+      setError(2);
+      await delay(2000);
+      setError(0);
       return;
     }
-    //setBetStarted(true);
+    
     for (let i = 0; i < numOfAutoBets; i++) {
-        randomTraverse();
-        await delay(1200);
+      const e = await dispatch(startBet({
+        betAmount,
+        risk,
+        rows
+      }));
+      
+      if(e.payload.bet_status == 1) {
+        setBetStarted(true);
+
+        await delay(2000);
+
+        await dispatch(reloadBalance({}));
+        setBetStarted(false);          
+      }
+
+      await delay(1000);
     }
-    //setBetStarted(false);
   };
 
   const handleRows = (e) => {
@@ -183,6 +209,7 @@ const App = () => {
 
   return (
     <div className='app'>
+      <ToastContainer theme="dark"/>  
       <div>
         <Balance />
         <Menu
@@ -204,6 +231,7 @@ const App = () => {
         rows={rows}
         nodeArr={nodeArr}
         tempOldNodeArr={tempOldNodeArr}
+        betStarted={betStarted}
       />
       <div className='error-module'>
         <Error error={error} />
